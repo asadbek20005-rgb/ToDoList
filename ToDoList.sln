@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoListApplication", "ToDo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoList.Data", "DoList.Data\DoList.Data.csproj", "{2DC60769-2905-44D7-A221-6CBF44E1E52C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoList.Common", "DoList.Common\DoList.Common.csproj", "{BF99B2B0-36F9-4C43-846D-87E65F185112}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoList.Service", "DoList.Service\DoList.Service.csproj", "{57DCA220-6247-482E-9437-96F5EEF50B5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{2DC60769-2905-44D7-A221-6CBF44E1E52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DC60769-2905-44D7-A221-6CBF44E1E52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DC60769-2905-44D7-A221-6CBF44E1E52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF99B2B0-36F9-4C43-846D-87E65F185112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF99B2B0-36F9-4C43-846D-87E65F185112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF99B2B0-36F9-4C43-846D-87E65F185112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF99B2B0-36F9-4C43-846D-87E65F185112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57DCA220-6247-482E-9437-96F5EEF50B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DCA220-6247-482E-9437-96F5EEF50B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DCA220-6247-482E-9437-96F5EEF50B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DCA220-6247-482E-9437-96F5EEF50B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
