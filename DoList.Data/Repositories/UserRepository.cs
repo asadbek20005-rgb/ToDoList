@@ -38,7 +38,7 @@ namespace DoList.Data.Repositories
             return user;
         }
 
-        public async Task<Users> GetUserByName(string userName)
+        public async Task<Users> GetUserByUsername(string userName)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username == userName);
             if (user == null)
