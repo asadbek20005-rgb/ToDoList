@@ -4,7 +4,7 @@ namespace DoList.Service.ModelServices
 {
     public class TaskService
     {
-        public UserService(AppDbContext appDbContext)
+        public TaskService(AppDbContext appDbContext)
         {
             _dbContext = appDbContext;
         }
