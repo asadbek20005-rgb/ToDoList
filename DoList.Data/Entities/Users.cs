@@ -2,7 +2,7 @@
 
 namespace DoList.Data.Entities
 {
-    public class User
+    public class Users
     {
         [Key]
         public Guid Id { get; set; }
@@ -20,5 +20,8 @@ namespace DoList.Data.Entities
         [Required]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+
+        public List<Tasks> Tasks { get; set; }   
     }
 }
