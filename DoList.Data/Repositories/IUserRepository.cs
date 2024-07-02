@@ -6,7 +6,7 @@ namespace DoList.Data.Repositories
     {
         public Task<List<Users>> GetAllUsers();
         public Task<Users> GetUserById(Guid userId);
-        public Task<Users> GetUserByName(string userName);
+        public Task<Users> GetUserByUsername(string userName);
         public Task AddUser(Users user);
         public Task UpdateUser(Users user);
         public Task DeleteUser(Users userId);
