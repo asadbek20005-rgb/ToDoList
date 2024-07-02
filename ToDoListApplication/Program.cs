@@ -1,8 +1,14 @@
-var builder = WebApplication.CreateBuilder(args);
+using DoList.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
+var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Connection");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddDbContext<AppDbContext>(context =>
+{
+    context.UseNpgsql(connectionString);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
