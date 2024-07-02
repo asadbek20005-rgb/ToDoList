@@ -1,8 +1,8 @@
 ﻿using DoList.Data.Context;
 
-namespace DoList.Service
+namespace DoList.Service.ModelServices
 {
-    public class UserService
+    public class TaskService
     {
         public UserService(AppDbContext appDbContext)
         {
