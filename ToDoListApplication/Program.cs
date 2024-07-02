@@ -7,7 +7,7 @@ var connectionString = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(context =>
 {
-    context.UseNpgsql(connectionString);
+    context.UseNpgsql( connectionString);
 });
 var app = builder.Build();
 
