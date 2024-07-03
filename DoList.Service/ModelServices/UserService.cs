@@ -1,9 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using DoList.Common.Dtos;
 using DoList.Common.Models.User;
-using DoList.Data.Context;
-using Microsoft.EntityFrameworkCore;
+using DoList.Data.Entities;
+using DoList.Data.Repositories;
+using DoList.Service.ConvertToExtension;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,20 +14,27 @@ namespace DoList.Service.ModelServices
 {
     public class UserService
     {
-        public UserService(AppDbContext appDbContext, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IConfiguration configuration, UserManager<UserDto> userManager)
         {
-            _dbContext = appDbContext;
+            _userRepository = userRepository;
             _configuration = configuration;
+            _userManager = userManager;
         }
-        private readonly AppDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
-
+        private readonly UserManager<UserDto> _userManager;
         public async Task<string> Login(LoginUserModel model)
         {
-            var user = await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.Username == model.Username && u.Password == model.Password);
-
+            var user = await _userRepository.GetUserByUsername(model.Username);
             if (user == null)
+            {
+                throw new UnauthorizedAccessException("Invalid username or password");
+            }
+
+            var passwordHasher = new PasswordHasher<Users>();
+
+            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+            if (passwordVerificationResult != PasswordVerificationResult.Success)
             {
                 throw new UnauthorizedAccessException("Invalid username or password");
             }
@@ -49,5 +59,30 @@ namespace DoList.Service.ModelServices
             return tokenString;
         }
 
+        public async Task<UserDto> AddUser(AddUserModel model)
+        {
+            await Check(model.Username);
+
+            var user = new Users
+            {
+                Firstname = model.Firstname,
+                Lastname = model.Lastname,
+                Username = model.Username,
+            };
+            var passwordHash = new PasswordHasher<Users>().HashPassword(user, model.Password);
+            user.Password = passwordHash;
+            await _userRepository.AddUser(user);
+
+           return user.ParseToModel();
+        }
+
+
+
+
+        private async Task Check(string username)
+        {
+            var user = await _userRepository.GetUserByUsername(username);
+            if (user is not null) throw new Exception($"Username with {username} is exist");
+        }
     }
 }
