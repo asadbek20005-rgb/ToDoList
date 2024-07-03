@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DoList.Data\DoList.Data.csproj" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\DoList.Data\DoList.Data.csproj" />
   </ItemGroup>
 
 </Project>
