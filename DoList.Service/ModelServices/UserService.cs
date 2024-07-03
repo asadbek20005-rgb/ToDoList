@@ -78,6 +78,30 @@ namespace DoList.Service.ModelServices
 
 
 
+        public async Task<UserDto> UpdateUser(Guid userId, UpdateUserModel model)
+        {
+            var user = await _userRepository.GetUserById(userId);
+            if (user is not null)
+            {
+                user.Firstname = model.Firstname;
+                user.Lastname = model.Lastname;
+                user.Username = model.Username;
+
+                await _userRepository.UpdateUser(user);
+
+                return user.ParseToModel();
+            }
+
+            throw new Exception($"User with id {userId} not found.");
+        }
+
+
+
+
+
+
+
+
 
         private async Task Check(string username)
         {
