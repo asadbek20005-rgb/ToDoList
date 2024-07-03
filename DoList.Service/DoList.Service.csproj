@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <ProjectReference Include="..\DoList.Common\DoList.Common.csproj" />
 	  <ProjectReference Include="..\DoList.Data\DoList.Data.csproj" />
   </ItemGroup>
 
