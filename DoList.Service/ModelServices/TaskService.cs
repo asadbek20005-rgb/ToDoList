@@ -55,5 +55,25 @@ namespace DoList.Service.ModelServices
             throw new Exception($"User with id {taskId} not found.");
         }
 
+        public async Task<TasksDto> UpdateTask(int taskId, UpdateTaskModel model)
+        {
+            var task = await _taskRepository.GetTaskById(taskId);
+            if (task is not null)
+            {
+
+                task.Taskname = model.Taskname;
+                task.Description = model.Description;
+                task.DueDate = model.DueDate;
+                task.DueTime = model.DueTime;
+                task.IsCompleted = model.IsCompleted;
+                task.TaskType = model.TaskType;
+                    
+
+                await _taskRepository.UpdateTask(task);
+                return task.ParseToModel();
+            }
+
+            throw new Exception($"User with id {taskId} not found.");
+        }
     }
 }
