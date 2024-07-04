@@ -37,5 +37,14 @@ namespace DoList.Service.ModelServices
                  throw new Exception($"Task with id {taskId} not found.");
             return task.ParseToModel();
         }
+
+
+        public async Task<List<TasksDto>> GetAllTasks()
+        {
+            var tasks = await _taskRepository.GetAllTasks()?? null;
+            return tasks.ParseToModels();
+        }
+
+
     }
 }
