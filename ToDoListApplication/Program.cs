@@ -1,10 +1,10 @@
-using DoList.Data.Context;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using ToDoListApplication.Data;
-using AppDbContext = ToDoListApplication.Data.AppDbContext;
 using System.Text;
+using DoList.Data.Context;
+using DoList.Data.Repositories;
+using DoList.Service.ModelServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,7 @@ var connectionString = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DoList.Data.Context.AppDbContext>(context =>
 {
-    context.UseNpgsql( connectionString);
+    context.UseNpgsql(connectionString);
 });
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings.Key);
@@ -39,6 +39,11 @@ builder.Services.AddAuthentication(options =>
      };
  });
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TaskService>();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 var app = builder.Build();
 
@@ -55,7 +60,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();    
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

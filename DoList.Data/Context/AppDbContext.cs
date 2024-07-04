@@ -1,10 +1,12 @@
 ﻿
 using DoList.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoList.Data.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser> 
     {
         public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(options: dbContextOptions)
         {

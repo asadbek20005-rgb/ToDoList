@@ -14,15 +14,14 @@ namespace DoList.Service.ModelServices
 {
     public class UserService
     {
-        public UserService(IUserRepository userRepository, IConfiguration configuration, UserManager<UserDto> userManager)
+        public UserService(IUserRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _configuration = configuration;
-            _userManager = userManager;
+         
         }
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
-        private readonly UserManager<UserDto> _userManager;
         public async Task<string> Login(LoginUserModel model)
         {
             var user = await _userRepository.GetUserByUsername(model.Username);
@@ -96,6 +95,33 @@ namespace DoList.Service.ModelServices
         }
 
 
+
+        public async Task<string> DeleteUser(Guid userId)
+        {
+            var user = await _userRepository.GetUserById(userId);
+            if (user is not null)
+            {
+                await _userRepository.DeleteUser(user);
+                return $"{userId} is deleted successfully";
+            }
+            throw new Exception($"User with id {userId} not found.");
+
+        }
+
+
+        public async Task<UserDto> GetUser(Guid userId)
+        {
+            var user = await _userRepository.GetUserById(userId)??
+                throw new Exception($"User with id {userId} not found.");
+            return user.ParseToModel();
+        }
+
+        public async Task<List<UserDto>> GetAllUsers()
+        {
+            var users = await _userRepository.GetAllUsers()??
+                null; 
+            return users.ParseToModels();
+        }
 
 
 
