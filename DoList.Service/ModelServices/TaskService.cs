@@ -44,7 +44,16 @@ namespace DoList.Service.ModelServices
             var tasks = await _taskRepository.GetAllTasks()?? null;
             return tasks.ParseToModels();
         }
-
+        public async Task<string> DeleteTask(int taskId)
+        {
+            var task = await _taskRepository.GetTaskById(taskId);
+            if (task is not null)
+            {
+                await _taskRepository.DeleteTask(task);
+                return $"{taskId} is deleted successfully";
+            }
+            throw new Exception($"User with id {taskId} not found.");
+        }
 
     }
 }
