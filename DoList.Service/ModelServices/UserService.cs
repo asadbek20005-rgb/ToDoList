@@ -67,13 +67,16 @@ namespace DoList.Service.ModelServices
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Username = model.Username,
+                Role = model.Role 
             };
+
             var passwordHash = new PasswordHasher<Users>().HashPassword(user, model.Password);
             user.Password = passwordHash;
             await _userRepository.AddUser(user);
 
-           return user.ParseToModel();
+            return user.ParseToModel();
         }
+
 
 
 
