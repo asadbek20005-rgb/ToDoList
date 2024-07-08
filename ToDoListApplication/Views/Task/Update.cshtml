@@ -3,7 +3,6 @@
 *@
 @{
 }
-
 @model DoList.Common.Models.Task.UpdateTaskModel
 
 @{
@@ -52,8 +51,6 @@
         </div>
     </div>
 
-
-
-
-    <button type="submit" class="btn btn-primary">Update Task</button>
+    <button type="submit" name="submitAction" value="update" class="btn btn-primary">Update Task</button>
+    <button type="submit" name="submitAction" value="delete" class="btn btn-danger">Delete Task</button>
 </form>
