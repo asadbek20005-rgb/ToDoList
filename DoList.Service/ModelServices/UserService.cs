@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using DoList.Common.Dtos;
 using DoList.Common.Models.User;
+using DoList.Common.Statics;
 using DoList.Data.Entities;
 using DoList.Data.Repositories;
 using DoList.Service.ConvertToExtension;
@@ -67,13 +68,13 @@ namespace DoList.Service.ModelServices
                 Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Username = model.Username,
-                Role = model.Role 
+                Role = Role.User
             };
 
             var passwordHash = new PasswordHasher<Users>().HashPassword(user, model.Password);
             user.Password = passwordHash;
+            user.ConfirmPassword = model.ConfirmPassword;
             await _userRepository.AddUser(user);
-
             return user.ParseToModel();
         }
 
