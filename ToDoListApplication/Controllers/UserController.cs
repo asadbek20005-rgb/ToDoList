@@ -7,7 +7,7 @@ namespace ToDoListApplication.Controllers
     public class UserController : Controller
     {
         public UserController(UserService userService) => _userService = userService;
-        
+
         private readonly UserService _userService;
         public IActionResult Index()
         {
@@ -23,14 +23,20 @@ namespace ToDoListApplication.Controllers
         {
             return View();
         }
-          
+
         public async Task<IActionResult> GetAllUsers()
         {
-            var allUsers= await _userService.GetAllUsers();
+            var allUsers = await _userService.GetAllUsers();
             return View(allUsers);
         }
-      
-        public async Task<IActionResult> Update(Guid userId)
+
+        public async Task<IActionResult> UpdateView(Guid userId)
+        {
+            var user = await _userService.GetUser(userId);
+            return View(user);
+        }
+
+        public async Task<IActionResult> DeleteUser(Guid userId)
         {
             var user = await _userService.GetUser(userId);
             return View(user);
@@ -39,22 +45,34 @@ namespace ToDoListApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginUserModel model)
         {
-            var loginUser = await _userService.Login(model);
-            if(loginUser is not null)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("GetAllUsers", "User");
+                try
+                {
+                    var loginUser = await _userService.Login(model);
+                    if (loginUser is not null)
+                    {
+                        return RedirectToAction("GetAllUsers", "User");
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = ex.Message;
+                    return RedirectToAction("Login", "User"); 
+                }
             }
-            else
-            {
-                return View();
-            }
+
+            // ModelState.IsValid false bo'lsa, model qayta yuklanganidan so'ng, login sahifasiga qayta o'tiladi
+            return View(model);
         }
 
-        [HttpPost]       
+
+        [HttpPost]
         public async Task<IActionResult> Register(AddUserModel model)
         {
-          var userAdding =  await _userService.AddUser(model);
-            if(userAdding is not null)
+            var userAdding = await _userService.AddUser(model);
+            if (userAdding is not null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -71,6 +89,12 @@ namespace ToDoListApplication.Controllers
             var user = await _userService.UpdateUser(userId, model);
             return RedirectToAction("GetAllUsers", "User");
         }
-      
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid userId)
+        {
+            var user = await _userService.DeleteUser(userId);
+            return RedirectToAction("GetAllUsers", "User");
+        }
     }
 }

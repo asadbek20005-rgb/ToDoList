@@ -4,14 +4,14 @@
 @{
 }
 
-@model DoList.Common.Models.User.UpdateUserModel
+@model DoList.Common.Dtos.UserDto
 
 @{
     ViewBag.Title = "Update";
 }
 
 <h2>Update User</h2>
-<form method="post" action="@Url.Action("Update", "User")">
+<form method="post" action="@Url.Action("Update", "User", new{userId  = Model.Id})">
     <div class="mb-3">
         <label for="firstname" class="form-label">First Name</label>
         <input type="text" class="form-control" id="firstname" name="firstname" value="@Model.Firstname">
