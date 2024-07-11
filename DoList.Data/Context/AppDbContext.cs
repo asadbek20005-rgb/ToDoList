@@ -13,7 +13,9 @@ namespace DoList.Data.Context
             
         }
 
-        public DbSet<Users> Users { get; set; }
+        public  DbSet<Users> Users { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
+
+       
     }
 }

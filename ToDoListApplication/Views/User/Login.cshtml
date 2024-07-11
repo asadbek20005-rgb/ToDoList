@@ -10,7 +10,15 @@
 @{
     ViewBag.Title = "Login";
 }
-
+@{
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
 <h2>Login to Your Account</h2>
 <form method="post" action="@Url.Action("Login", "User")">
     <div class="mb-3">

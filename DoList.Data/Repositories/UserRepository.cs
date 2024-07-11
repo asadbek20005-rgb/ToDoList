@@ -27,14 +27,10 @@ namespace DoList.Data.Repositories
         {
             return await _dbContext.Users.ToListAsync();
         }
-
+    
         public async Task<Users> GetUserById(Guid userId)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            if(user  == null)
-            {
-                throw new Exception("User not Found");
-            }
+            var user = await _dbContext.Users.Where(x => x.Id ==  userId).FirstOrDefaultAsync();       
             return user;
         }
 

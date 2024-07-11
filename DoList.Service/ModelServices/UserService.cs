@@ -28,7 +28,7 @@ namespace DoList.Service.ModelServices
             var user = await _userRepository.GetUserByUsername(model.Username);
             if (user == null)
             {
-                throw new UnauthorizedAccessException("Invalid username or password");
+                throw new UnauthorizedAccessException("Invalid username or password or you should register first");
             }
 
             var passwordHasher = new PasswordHasher<Users>();
@@ -62,7 +62,7 @@ namespace DoList.Service.ModelServices
         public async Task<UserDto> AddUser(AddUserModel model)
         {
             await Check(model.Username);
-
+                
             var user = new Users
             {
                 Firstname = model.Firstname,
@@ -94,8 +94,7 @@ namespace DoList.Service.ModelServices
 
                 return user.ParseToModel();
             }
-
-            throw new Exception($"User with id {userId} not found.");
+            throw new KeyNotFoundException($"User with ID {userId} not found");
         }
 
 
@@ -115,7 +114,8 @@ namespace DoList.Service.ModelServices
 
         public async Task<UserDto> GetUser(Guid userId)
         {
-            var user = await _userRepository.GetUserById(userId)??
+            var user = await _userRepository.GetUserById(userId);
+            if(user is null)
                 throw new Exception($"User with id {userId} not found.");
             return user.ParseToModel();
         }

@@ -11,7 +11,7 @@
 }
 
 <h2>Delete User</h2>
-<form method="post" action="@Url.Action("Delete", "User")">
+<form method="post" action="@Url.Action("Delete", "User", new{userId = Model.Id})">
 
     <div class="mb-3">
         <label for="id" class="form-label">Id</label>

@@ -22,7 +22,7 @@
             <th>Role</th>
             <th>Update</th>
             <th>Delete</th>
-            <th><a @Url.Action("Register", "User")>Add</a></th>
+            <th><a class="btn btn-outline-primary" href="@Url.Action("Register", "User")">Add</a></th>
         </tr>
     </thead>
     <tbody>
@@ -34,8 +34,8 @@
                 <td>@user.Lastname</td>
                 <td>@user.Username</td>
                 <td>@user.Role</td>
-                <td><a class="btn btn-secondary" @Url.Action("Update", "User")>Update</a></td>
-                <td><a class="btn btn-danger" @Url.Action("Delete", "User")>Update</a></td>
+                <td><a class="btn btn-secondary" href="@Url.Action("UpdateView", "User", new {userId = user.Id })">Update</a></td>
+                <td><a class="btn btn-danger" href="@Url.Action("DeleteUser", "User", new{userId = user.Id})">Delete</a></td>
             </tr>
         }
     </tbody>
