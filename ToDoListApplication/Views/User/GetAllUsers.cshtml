@@ -20,6 +20,9 @@
             <th>Last Name</th>
             <th>User Name</th>
             <th>Role</th>
+            <th>Update</th>
+            <th>Delete</th>
+            <th><a @Url.Action("Register", "User")>Add</a></th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +34,8 @@
                 <td>@user.Lastname</td>
                 <td>@user.Username</td>
                 <td>@user.Role</td>
+                <td><a class="btn btn-secondary" @Url.Action("Update", "User")>Update</a></td>
+                <td><a class="btn btn-danger" @Url.Action("Delete", "User")>Update</a></td>
             </tr>
         }
     </tbody>
