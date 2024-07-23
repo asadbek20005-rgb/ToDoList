@@ -5,10 +5,10 @@ namespace DoList.Data.Repositories
     public interface ITaskRepository
     {
         public Task<List<Tasks>> GetAllTasks();
-        public Task<Tasks> GetTaskById(int userId);
-        public Task<Tasks> GetTaskByTaskname(string userName);
-        public Task AddTask(Tasks user);
-        public Task UpdateTask(Tasks user);
-        public Task DeleteTask(Tasks userId);
+        public Task<Tasks> GetTaskById(int taskId);
+        public Task<Tasks> GetTaskByTaskname(string taskName);
+        public Task AddTask(Tasks task);
+        public Task UpdateTask(Tasks task);
+        public Task DeleteTask(Tasks taskId);
     }
 }

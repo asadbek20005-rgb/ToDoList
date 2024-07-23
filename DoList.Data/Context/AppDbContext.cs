@@ -13,6 +13,11 @@ namespace DoList.Data.Context
             
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
+
         public  DbSet<Users> Users { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
 

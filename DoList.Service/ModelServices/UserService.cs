@@ -1,12 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Blazored.LocalStorage;
 using DoList.Common.Dtos;
 using DoList.Common.Models.User;
 using DoList.Common.Statics;
 using DoList.Data.Entities;
 using DoList.Data.Repositories;
 using DoList.Service.ConvertToExtension;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,14 +17,16 @@ namespace DoList.Service.ModelServices
 {
     public class UserService
     {
-        public UserService(IUserRepository userRepository, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
          
         }
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public async Task<string> Login(LoginUserModel model)
         {
             var user = await _userRepository.GetUserByUsername(model.Username);
@@ -56,6 +60,7 @@ namespace DoList.Service.ModelServices
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
+             _httpContextAccessor.HttpContext.Session.SetString("UserId", user.Id.ToString());
             return tokenString;
         }
 

@@ -37,13 +37,30 @@ builder.Services.AddAuthentication(options =>
          ValidAudience = jwtSettings["ToDoListApplication"],
          IssuerSigningKey = new SymmetricSecurityKey(key)
      };
+ })
+ .AddCookie("CookieAuthentication", config =>
+ {
+     config.Cookie.Name = "UserLoginCookie";
+     config.LoginPath = "/User/Login";
  });
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.HttpOnly  = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddMvc();
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TaskService>();
-
+builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 var app = builder.Build();
 
@@ -58,6 +75,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();   
 app.UseRouting();
 
 app.UseAuthentication();
@@ -65,6 +83,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Task}/{action=GetAllTasks}/{id?}");
 
 app.Run();

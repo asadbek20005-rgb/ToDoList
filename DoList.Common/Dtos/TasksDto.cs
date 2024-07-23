@@ -7,6 +7,6 @@
         public string Description { get; set; }
         public string TaskType { get; set; }
         public bool IsCompleted { get; set; }
-        public UserDto User { get; set; }   
+          
     }
 }
