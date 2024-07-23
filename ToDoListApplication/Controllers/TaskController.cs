@@ -1,4 +1,5 @@
-﻿using DoList.Service.ModelServices;
+﻿using DoList.Common.Models.Task;
+using DoList.Service.ModelServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ToDoListApplication.Controllers
@@ -10,6 +11,35 @@ namespace ToDoListApplication.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> GetAllTasks()
+        {
+            var allTasks = await _taskService.GetAllTasks();
+            return View(allTasks);
+        }
+
+        public async Task<IActionResult> AddTask()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTask(AddTaskModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var newTask = await _taskService.AddTask(model);
+                    return RedirectToAction("GetAllTasks", "Task");
+                }catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = ex.Message;
+                    return View(model);
+                }
+            }
+            return View(model);
         }
     }
 }

@@ -6,8 +6,14 @@ namespace ToDoListApplication.Controllers
 {
     public class UserController : Controller
     {
-        public UserController(UserService userService) => _userService = userService;
 
+        public UserController(UserService userService, IHttpContextAccessor httpContextAccessor)
+        {
+            _userService = userService;
+            _contextAccessor = httpContextAccessor;
+
+        }
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly UserService _userService;
         public IActionResult Index()
         {
@@ -16,6 +22,7 @@ namespace ToDoListApplication.Controllers
 
         public async Task<IActionResult> Login()
         {
+          
             return View();
         }
 
@@ -50,21 +57,26 @@ namespace ToDoListApplication.Controllers
                 try
                 {
                     var loginUser = await _userService.Login(model);
-                    if (loginUser is not null)
-                    {
-                        return RedirectToAction("GetAllUsers", "User");
-                    }
-                    
+                   _contextAccessor.HttpContext?.Session.SetString("Jwt", loginUser);
+                    return RedirectToAction("GetAllUsers", "User");
+
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorMessage"] = ex.Message;
-                    return RedirectToAction("Login", "User"); 
+                    return RedirectToAction("Login", "User");
                 }
             }
-
-            // ModelState.IsValid false bo'lsa, model qayta yuklanganidan so'ng, login sahifasiga qayta o'tiladi
             return View(model);
+        }
+
+        public async Task<IActionResult> GetToken()
+        {
+            var token = _contextAccessor.HttpContext.Session.GetString("Jwt");
+            var userId = _contextAccessor.HttpContext.Session.GetString("UserId");
+            ViewBag.Token = token;  
+            ViewBag.UserId = userId;
+            return View();
         }
 
 
@@ -74,7 +86,7 @@ namespace ToDoListApplication.Controllers
             var userAdding = await _userService.AddUser(model);
             if (userAdding is not null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "User");
             }
             else
             {

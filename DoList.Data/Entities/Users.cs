@@ -16,13 +16,13 @@ namespace DoList.Data.Entities
         public string Password { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
         [Required]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-
-        public List<Tasks> Tasks { get; set; }   
+        
+        public virtual List<Tasks>? Tasks { get; set; }   
     }
 }

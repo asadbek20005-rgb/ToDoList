@@ -3,27 +3,41 @@ using DoList.Common.Models.Task;
 using DoList.Data.Entities;
 using DoList.Data.Repositories;
 using DoList.Service.ConvertToExtension;
+using Microsoft.AspNetCore.Http;
 
 namespace DoList.Service.ModelServices
 {
     public class TaskService
     {
-        public TaskService(ITaskRepository taskRepository)
+        public TaskService(ITaskRepository taskRepository, HttpContextAccessor http)
         {
             _taskRepository = taskRepository;
+            _httpContext = http;
         }
         private readonly ITaskRepository _taskRepository;
+        private readonly HttpContextAccessor _httpContext;
 
         public async Task<TasksDto> AddTask(AddTaskModel model)
         {
+			var userId = _httpContext.HttpContext?.Session.GetString("UserId");
+			if (userId == null)
+			{
+				
+				throw new InvalidOperationException("User is not logged in.");
+			}
             var newTask = new Tasks
             {
                 Taskname = model.Taskname,
-                Description = model.Description,
-                TaskType = model.TaskType,
                 DueDate = model.DueDate,
                 DueTime = model.DueTime,
+                IsCompleted = false,
+                UserId = Guid.Parse(userId),
             };
+
+            if (!string.IsNullOrWhiteSpace(model.Description))
+               newTask.Description = model.Description;
+            if (!string.IsNullOrWhiteSpace(model.TaskType))
+                newTask.TaskType = model.TaskType;
 
             await _taskRepository.AddTask(newTask);
 

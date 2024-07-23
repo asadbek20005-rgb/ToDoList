@@ -11,11 +11,19 @@
     ViewBag.Title = "New Task";
 }
 
+@{
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
 <h2>New Task</h2>
 
-<form method="post" action="@Url.Action("AddTask", "Task")">
-    @Html.AntiForgeryToken()
-
+<form method="post" asp-action="AddTask">
     <div class="form-group">
         <label asp-for="Taskname" class="control-label"></label>
         <input asp-for="Taskname" class="form-control" />
