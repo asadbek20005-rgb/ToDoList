@@ -1,22 +1,25 @@
 ﻿using DoList.Common.Dtos;
 using DoList.Common.Models.Task;
+using DoList.Data.Context;
 using DoList.Data.Entities;
 using DoList.Data.Repositories;
 using DoList.Service.ConvertToExtension;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoList.Service.ModelServices
 {
     public class TaskService
     {
-        public TaskService(ITaskRepository taskRepository, HttpContextAccessor http)
+        public TaskService(ITaskRepository taskRepository, HttpContextAccessor http, AppDbContext appDbContext)
         {
             _taskRepository = taskRepository;
             _httpContext = http;
+            _appDbContext = appDbContext;
         }
         private readonly ITaskRepository _taskRepository;
         private readonly HttpContextAccessor _httpContext;
-
+        private readonly AppDbContext _appDbContext;
         public async Task<TasksDto> AddTask(AddTaskModel model)
         {
 			var userId = _httpContext.HttpContext?.Session.GetString("UserId");
@@ -56,7 +59,7 @@ namespace DoList.Service.ModelServices
         public async Task<List<TasksDto>> GetAllTasks()
         {
             var tasks = await _taskRepository.GetAllTasks()?? null;
-            return tasks.ParseToModels();
+            return tasks!.ParseToModels();
         }
         public async Task<string> DeleteTask(int taskId)
         {
@@ -74,20 +77,26 @@ namespace DoList.Service.ModelServices
             var task = await _taskRepository.GetTaskById(taskId);
             if (task is not null)
             {
+                if (!string.IsNullOrEmpty(model.Taskname))
+                    task.Taskname = model.Taskname;
+                if (!string.IsNullOrEmpty(model.Description))
+                    task.Description = model.Description;
+                if (model.DueDate is not null)
+                    task.DueDate = model.DueDate.Value;
+                if (model.DueTime is not null)
+                    task.DueTime = model.DueTime.Value;
 
-                task.Taskname = model.Taskname;
-                task.Description = model.Description;
-                task.DueDate = model.DueDate;
-                task.DueTime = model.DueTime;
                 task.IsCompleted = model.IsCompleted;
                 task.TaskType = model.TaskType;
-                    
 
                 await _taskRepository.UpdateTask(task);
                 return task.ParseToModel();
             }
 
-            throw new Exception($"User with id {taskId} not found.");
+            throw new Exception("Task not found");
         }
+
+
+
     }
-}
+}   
