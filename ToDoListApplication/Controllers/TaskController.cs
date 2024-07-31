@@ -24,6 +24,12 @@ namespace ToDoListApplication.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Update(int taskId)
+        {
+            var task = await _taskService.GetTask(taskId);
+            return View(task);
+        }
+             
         [HttpPost]
         public async Task<IActionResult> AddTask(AddTaskModel model)
         {
@@ -41,5 +47,13 @@ namespace ToDoListApplication.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int taskId, UpdateTaskModel model)
+        {
+           await _taskService.UpdateTask(taskId, model);
+            return RedirectToAction("GetAllTasks");
+        }
+
     }
 }

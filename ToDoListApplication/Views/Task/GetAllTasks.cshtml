@@ -3,21 +3,21 @@
 *@
 @{
 }
-
 @model List<DoList.Common.Dtos.TasksDto>
 
-@foreach(var item in Model)
+@foreach (var item in Model)
 {
-    <form method="post" action="@Url.Action("Update", "Task")">
-
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">@item.Taskname</h5>
-        <p class="card-text">@item.Description</p>
-        <h2>@item.TaskType</h2>
-    </div>
-</div>
-    
+    <form method="post" asp-action="Update">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">    
+                <h5 class="card-title">@item.Taskname</h5>
+                <p class="card-text">@item.Description</p>
+                <h2>@item.TaskType</h2>
+                <input type="hidden" name="TaskId" value="@item.Id" />
+                <a href="@Url.Action("Update", "Task", new {taskId = item.Id})" class="btn btn-primary">Detail</a>
+            </div>
+        </div>
     </form>
 }
+    
 
