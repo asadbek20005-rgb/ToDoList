@@ -9,7 +9,8 @@ using Task = System.Threading.Tasks.Task;
 
 namespace ToDoList.Service.Api;
 
-public class UserService(IBaseRepository<User> userRepository, IMemoryCache memoryCache) : StatusGenericHandler, IUserService
+public class UserService(IBaseRepository<User> userRepository, IMemoryCache memoryCache)
+    : StatusGenericHandler, IUserService
 {
     private readonly IMemoryCache _memoryCache = memoryCache;
     private const string Key = "user";
@@ -36,5 +37,45 @@ public class UserService(IBaseRepository<User> userRepository, IMemoryCache memo
             AddError($"User:{username} already exists");
             return;
         }
+    }
+
+    public async Task<string> Login(LoginModel model)
+    {
+        User? user = await GetUserByUsername(model.Username);
+        if (user is null)
+        {
+            AddError($"User:{model.Username} not found");
+            return string.Empty;
+        }
+
+        bool isPasswordValid = VerifyPassword(user, model.Password);
+        if (isPasswordValid)
+        {
+            return "token";
+        }
+
+        return "Invalid login";
+    }
+
+    private async Task<User?> GetUserByUsername(string username)
+    {
+        var user = await _userRepositroy.GetAll()
+            .Where(u => u.Username == username)
+            .FirstOrDefaultAsync();
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        return user;
+    }
+
+
+    private bool VerifyPassword(User user, string password)
+    {
+        var passwordHasher = new PasswordHasher<User>();
+        var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+        return result == PasswordVerificationResult.Success;
     }
 }
