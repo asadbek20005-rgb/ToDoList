@@ -10,9 +10,11 @@ public static class ErrorExtension
         if (!status.HasErrors)
             return;
 
-        foreach (var error in status.Errors)
+        foreach (ErrorGeneric error in status.Errors)
         {
-            modelState.AddModelError(error.ErrorResult.MemberNames.Count() == 0 ? error.ErrorResult.MemberNames.First() : string.Empty, error.ToString());
+            modelState.AddModelError(
+                key: error.ErrorResult.MemberNames.Count() == 1 ? error.ErrorResult.MemberNames.First() : "",
+                error.ToString());
         }
     }
 }
