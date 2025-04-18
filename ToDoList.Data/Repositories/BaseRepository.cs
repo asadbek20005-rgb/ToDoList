@@ -6,7 +6,7 @@ namespace ToDoList.Data.Repositories;
 public class BaseRepository<TEntity>(AppDbContext appDbContext) : IBaseRepository<TEntity> where TEntity : class
 {
     private readonly AppDbContext _appDbContext = appDbContext;
-    public async Task AddAsync(TEntity entity)
+    public virtual async Task AddAsync(TEntity entity)
     {
         await _appDbContext.Set<TEntity>().AddAsync(entity);
         await _appDbContext.SaveChangesAsync();
@@ -18,7 +18,7 @@ public class BaseRepository<TEntity>(AppDbContext appDbContext) : IBaseRepositor
         await _appDbContext.SaveChangesAsync();
     }
 
-    public IQueryable<TEntity> GetAllAsync()
+    public IQueryable<TEntity> GetAll()
     {
         return _appDbContext.Set<TEntity>().AsQueryable();
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using StatusGeneric;
 using ToDoList.Common.Models;
@@ -14,9 +15,9 @@ public class UserService(IBaseRepository<User> userRepository, IMemoryCache memo
     private const string Key = "user";
     private readonly IBaseRepository<User> _userRepositroy = userRepository;
 
-    async Task IUserService.Register(RegisterModel model)
+    public async Task Register(RegisterModel model)
     {
-        IsUserExist(model.Username);
+        await IsUserExist(model.Username);
         var newUser = new User
         {
             Username = model.Username,
@@ -27,11 +28,12 @@ public class UserService(IBaseRepository<User> userRepository, IMemoryCache memo
         _memoryCache.Set(Key, newUser);
     }
 
-    private void IsUserExist(string username)
+    private async Task IsUserExist(string username)
     {
-        if (_memoryCache.TryGetValue(Key, out User? user))
+        var userIsHave = await _userRepositroy.GetAll().AnyAsync(u => u.Username == username);
+        if (userIsHave)
         {
-            AddError($"User with username: {username} is already exist");
+            AddError($"User:{username} already exists");
             return;
         }
     }
