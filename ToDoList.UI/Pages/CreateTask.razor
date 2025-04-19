@@ -1,0 +1,106 @@
+﻿@page "/create-task"
+@using ToDoList.Data.Enums
+@inherits PageCodeSource.CreateTaskPageCodeSource
+
+<div class="container">
+    <h1>Create Task</h1>
+    <p>Please fill in this form to create a new task.</p>
+    <hr>
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" @bind="Model.Title" placeholder="Enter Title" id="title" required>
+
+    <label for="description"><b>Description</b></label>
+    <input type="text" @bind="Model.Description" placeholder="Enter Description" id="description" required>
+
+    <label for="status"><b>Status</b></label>
+    <select id="status" @bind="Model.Status" class="form-control" required>
+        @foreach (var status in Enum.GetValues(typeof(Status)).Cast<Status>())
+        {
+            <option value="@status">@status</option>
+        }
+    </select>
+
+    <hr>
+    <button type="submit" class="registerbtn" @onclick="CreateTask">Create Task</button>
+</div>
+
+<div class="container signin">
+    <p>Go back to <a href="#">Task List</a>.</p>
+</div>
+
+
+<style>
+    .container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 24px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+    }
+
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 14px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.4);
+        }
+
+    .registerbtn {
+        background-color: #0066cc;
+        color: white;
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .registerbtn:hover {
+            background-color: #005bb5;
+        }
+
+    p a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+    .signin {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .signin a {
+            color: #0066cc;
+            font-weight: bold;
+            text-decoration: none;
+        }
+</style>

@@ -5,17 +5,20 @@ using StatusGeneric;
 using ToDoList.Common.Models;
 using ToDoList.Data.Entites;
 using ToDoList.Data.Repositories;
+using ToDoList.Service.Jwt;
 using Task = System.Threading.Tasks.Task;
 
 namespace ToDoList.Service.Api;
 
-public class UserService(IBaseRepository<User> userRepository, IMemoryCache memoryCache)
+public class UserService(IBaseRepository<User> userRepository,
+    IMemoryCache memoryCache,
+    IJwtService jwtService)
     : StatusGenericHandler, IUserService
 {
     private readonly IMemoryCache _memoryCache = memoryCache;
     private const string Key = "user";
     private readonly IBaseRepository<User> _userRepositroy = userRepository;
-
+    private readonly IJwtService _jwtService = jwtService;
     public async Task Register(RegisterModel model)
     {
         await IsUserExist(model.Username);
@@ -51,10 +54,10 @@ public class UserService(IBaseRepository<User> userRepository, IMemoryCache memo
         bool isPasswordValid = VerifyPassword(user, model.Password);
         if (isPasswordValid)
         {
-            return "token";
+            string token = _jwtService.GenerateToken(user);
+            return token;
         }
-
-        return "Invalid login";
+        return string.Empty;
     }
 
     private async Task<User?> GetUserByUsername(string username)
