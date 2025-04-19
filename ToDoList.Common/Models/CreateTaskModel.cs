@@ -10,4 +10,5 @@ public class CreateTaskModel
     public string? Description { get; set; }
     [Required]
     public Status Status { get; set; }
+    public DateOnly DueDate { get; set; }
 }

@@ -33,6 +33,7 @@ public class TaskService(IBaseRepository<Task> baseRepository,
             Description = model.Description,
             Status = model.Status,
             UserId = user.Id,
+            DueDate = model.DueDate
         };
 
         await _taskRepostory.AddAsync(newTask);
