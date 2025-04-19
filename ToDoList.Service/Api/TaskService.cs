@@ -58,4 +58,29 @@ public class TaskService(IBaseRepository<Task> baseRepository,
         }
         return false;
     }
+
+    public async Task<List<Task>?> GetAllTasks(Guid userId)
+    {
+        User? user = await GetUserById(userId);
+
+        if (user is null)
+        {
+            AddError("Error: User not found");
+            return null;
+        }
+
+        var tasks = await _taskRepostory.GetAll()
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
+
+        if (!tasks.Any())
+        {
+            AddError("Error: No tasks found for this user");
+            return null;
+        }
+        else
+        {
+            return tasks;
+        }
+    }
 }
