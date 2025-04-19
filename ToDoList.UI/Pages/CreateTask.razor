@@ -21,9 +21,13 @@
         }
     </select>
 
+    <label for="duedate"><b>Due Date</b></label>
+    <input type="date" @bind="Model.DueDate" id="duedate" class="form-control" />
+
     <hr>
     <button type="submit" class="registerbtn" @onclick="CreateTask">Create Task</button>
 </div>
+
 
 <div class="container signin">
     <p>Go back to <a href="#">Task List</a>.</p>
