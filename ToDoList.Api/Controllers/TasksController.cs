@@ -27,4 +27,17 @@ public class TasksController(ITaskService taskService, IUserHelperService userHe
         _taskService.CopyToModelState(ModelState);
         return BadRequest(ModelState);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllTasks()
+    {
+        Guid userId = _userHelperService.GetUserId();
+        var tasks = await _taskService.GetAllTasks(userId);
+        if (_taskService.IsValid)
+        {
+            return Ok(tasks);
+        }
+        _taskService.CopyToModelState(ModelState);
+        return NotFound(ModelState);
+    }
 }
