@@ -10,7 +10,7 @@ public class BaseRepository<TEntity>(AppDbContext appDbContext) : IBaseRepositor
     {
         await _appDbContext.Set<TEntity>().AddAsync(entity);
         await _appDbContext.SaveChangesAsync();
-    }
+        }
 
     public async Task DeleteAsync(TEntity entity)
     {
@@ -23,7 +23,7 @@ public class BaseRepository<TEntity>(AppDbContext appDbContext) : IBaseRepositor
         return _appDbContext.Set<TEntity>().AsQueryable();
     }
 
-    public async Task<TEntity?> GetByIdAsync(int id)
+    public async Task<TEntity?> GetByIdAsync<TId>(TId id)
     {
         return await _appDbContext.Set<TEntity>().FindAsync(id);
     }
