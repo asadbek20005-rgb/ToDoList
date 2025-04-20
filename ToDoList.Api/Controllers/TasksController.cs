@@ -4,6 +4,7 @@ using ToDoList.Common.Models;
 using ToDoList.Service.Api;
 using ToDoList.Service.Extensions;
 using ToDoList.Service.Helper;
+using Task = ToDoList.Data.Entites.Task;
 
 namespace ToDoList.Api.Controllers;
 
@@ -36,6 +37,21 @@ public class TasksController(ITaskService taskService, IUserHelperService userHe
         if (_taskService.IsValid)
         {
             return Ok(tasks);
+        }
+        _taskService.CopyToModelState(ModelState);
+        return NotFound(ModelState);
+    }
+
+
+    [HttpGet("{taskId:int}")]
+    public async Task<IActionResult> GetTaskById(int taskId)
+    {
+        Guid userId = _userHelperService.GetUserId();
+
+        Task? task = await _taskService.GetTaskById(userId, taskId);
+        if (_taskService.IsValid)
+        {
+            return Ok(task);
         }
         _taskService.CopyToModelState(ModelState);
         return NotFound(ModelState);
