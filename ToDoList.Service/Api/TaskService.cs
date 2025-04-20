@@ -83,4 +83,25 @@ public class TaskService(IBaseRepository<Task> baseRepository,
             return tasks;
         }
     }
+
+    public async Task<Task?> GetTaskById(Guid userId, int taskId)
+    {
+        User? user = await GetUserById(userId);
+        if (user is null)
+        {
+            AddError("Error: User not found");
+            return null;
+        }
+
+        Task? task = await _taskRepostory.GetByIdAsync(taskId);
+        if (task is null)
+        {
+            AddError("Error: Task not found");
+            return null;
+        }
+
+
+        return task;
+
+    }
 }
