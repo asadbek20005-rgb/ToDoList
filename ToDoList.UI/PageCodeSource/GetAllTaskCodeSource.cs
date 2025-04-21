@@ -16,7 +16,9 @@ public class GetAllTaskCodeSource : ComponentBase
         var (status, tasks) = await TaskIntegration.GetAllTasks();
         if (status == System.Net.HttpStatusCode.OK)
         {
-            Tasks = tasks;
+            if (tasks is null)
+                Tasks = new List<TaskDto>();
+            else Tasks = tasks;
         }
         else
         {

@@ -41,4 +41,17 @@ public class GetTaskPageCodeSource : ComponentBase
             NavigationManager.NavigateTo("/all-tasks");
         }
     }
+
+
+    public async Task DeleteTask()
+    {
+        var statusCode = await TaskIntegration.DeleteTask(TaskId);
+        if (statusCode == HttpStatusCode.OK)
+        {
+            NavigationManager.NavigateTo("/all-tasks");
+        }
+    }
+
+
+
 }

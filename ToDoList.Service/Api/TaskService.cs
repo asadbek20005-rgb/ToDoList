@@ -76,8 +76,7 @@ public class TaskService(IBaseRepository<Task> baseRepository,
 
         if (!tasks.Any())
         {
-            AddError("Error: No tasks found for this user");
-            return null;
+            return new();
         }
         else
         {
