@@ -8,7 +8,7 @@ public class TaskDto
     public string Title { get; set; }
     public string? Description { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime DueDate { get; set; }
+    public DateOnly DueDate { get; set; }
 
     public Status Status { get; set; }
 

@@ -2,30 +2,31 @@
 
 @inherits PageCodeSource.GetTaskPageCodeSource
 
-<div class="container">
-    <h2 class="page-title">Edit Task</h2>
-    <p class="subtitle">You can edit the task details below:</p>
-    <hr />
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Edit Task</h2>
+        <button class="btn btn-danger" @onclick="DeleteTask">❌</button>
+    </div>
 
     @if (TaskDto != null)
     {
-        <EditForm Model="TaskDto" OnValidSubmit="SaveTask">
+        <EditForm Model="TaskDto">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
-            <div class="form-group">
-                <label>Title</label>
+            <div class="mb-3">
+                <label class="form-label">Title</label>
                 <InputText @bind-Value="TaskDto.Title" class="form-control" />
             </div>
 
-            <div class="form-group">
-                <label>Description</label>
+            <div class="mb-3">
+                <label class="form-label">Description</label>
                 <InputTextArea @bind-Value="TaskDto.Description" class="form-control" rows="4" />
             </div>
 
-            <div class="form-group">
-                <label>Status</label>
-                <InputSelect @bind-Value="TaskDto.Status" class="form-control">
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <InputSelect @bind-Value="TaskDto.Status" class="form-select">
                     <option value="">Select status</option>
                     <option value="Pending">Pending</option>
                     <option value="InProgress">In Progress</option>
@@ -33,12 +34,15 @@
                 </InputSelect>
             </div>
 
-            <div class="form-group">
-                <label>Due Date</label>
+            <div class="mb-3">
+                <label class="form-label">Due Date</label>
                 <InputDate @bind-Value="TaskDto.DueDate" class="form-control" />
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">💾 Save Task</button>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary" @onclick="SaveTask">💾 Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="() => NavigationManager.NavigateTo("/all-tasks")">🔙 Back</button>
+            </div>
         </EditForm>
     }
     else
@@ -46,4 +50,32 @@
         <p class="text-muted">Task not found.</p>
     }
 </div>
+<style>
+    .btn {
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
 
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+</style>

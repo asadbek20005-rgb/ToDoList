@@ -38,4 +38,12 @@ public class TaskIntegration(HttpClient httpClient, ITokenHelper tokenHelper) : 
         var task = await response.Content.ReadFromJsonAsync<TaskDto>();
         return new(response.StatusCode, task);
     }
+
+    public async Task<HttpStatusCode> UpdateTask(int taskId, UpdateTaskModel model)
+    {
+        await _tokenHelper.AddTokenToHeader();
+        string url = $"/api/Users/userId/Tasks/{taskId}";
+        var response = await _httpClient.PutAsJsonAsync(url, model);
+        return response.StatusCode;
+    }
 }
