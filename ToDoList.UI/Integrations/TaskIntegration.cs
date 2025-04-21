@@ -7,6 +7,8 @@ using ToDoList.UI.Helpers;
 namespace ToDoList.UI.Integrations;
 
 
+
+
 public class TaskIntegration(HttpClient httpClient, ITokenHelper tokenHelper) : ITaskIntegration
 {
     private readonly HttpClient _httpClient = httpClient;
@@ -16,6 +18,14 @@ public class TaskIntegration(HttpClient httpClient, ITokenHelper tokenHelper) : 
         await _tokenHelper.AddTokenToHeader();
         string url = $"/api/Users/userId/Tasks";
         var response = await _httpClient.PostAsJsonAsync(url, model);
+        return response.StatusCode;
+    }
+
+    public async Task<HttpStatusCode> DeleteTask(int taskId)
+    {
+        await _tokenHelper.AddTokenToHeader();
+        string url = $"/api/Users/userId/Tasks/{taskId}";
+        var response = await _httpClient.DeleteAsync(url);
         return response.StatusCode;
     }
 

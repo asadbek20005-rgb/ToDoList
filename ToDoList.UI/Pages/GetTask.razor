@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Edit Task</h2>
-        <button class="btn btn-danger" @onclick="DeleteTask">❌</button>
+        <button class="btn btn-danger" @onclick="() => DeleteTask()">❌</button>
     </div>
 
     @if (TaskDto != null)
@@ -41,7 +41,6 @@
 
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-primary" @onclick="SaveTask">💾 Save</button>
-                <button type="button" class="btn btn-secondary" @onclick="() => NavigationManager.NavigateTo("/all-tasks")">🔙 Back</button>
             </div>
         </EditForm>
     }
