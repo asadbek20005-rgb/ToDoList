@@ -56,4 +56,17 @@ public class TasksController(ITaskService taskService, IUserHelperService userHe
         _taskService.CopyToModelState(ModelState);
         return NotFound(ModelState);
     }
+
+    [HttpPut("{taskId:int}")]
+    public async Task<IActionResult> UpdateTask(int taskId, UpdateTaskModel model)
+    {
+        Guid userId = _userHelperService.GetUserId();
+        await _taskService.UpdateTask(userId, taskId, model);
+        if (_taskService.IsValid)
+        {
+            return Ok("Done");
+        }
+        _taskService.CopyToModelState(ModelState);
+        return BadRequest(ModelState);
+    }
 }

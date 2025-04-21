@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using StatusGeneric;
 using ToDoList.Common.Models;
 using ToDoList.Data.Entites;
@@ -102,6 +103,28 @@ public class TaskService(IBaseRepository<Task> baseRepository,
 
 
         return task;
+
+    }
+
+    public async System.Threading.Tasks.Task UpdateTask(Guid userId, int taskId, UpdateTaskModel model)
+    {
+        User? user = await GetUserById(userId);
+        if (user is null)
+        {
+            AddError("Error: User not found");
+            return;
+        }
+
+        Task? task = await _taskRepostory.GetByIdAsync(taskId);
+        if (task is null)
+        {
+            AddError("Error: Task not found");
+            return;
+        }
+
+        var updatedTask = model.Adapt(task);
+
+        await _taskRepostory.UpdateAsync(updatedTask);
 
     }
 }
