@@ -69,4 +69,19 @@ public class TasksController(ITaskService taskService, IUserHelperService userHe
         _taskService.CopyToModelState(ModelState);
         return BadRequest(ModelState);
     }
+
+
+    [HttpDelete("{taskId:int}")]
+    public async Task<IActionResult> DeleteTask(int taskId)
+    {
+        Guid userId = _userHelperService.GetUserId();
+        await _taskService.DeleteTask(userId, taskId);
+        if (_taskService.IsValid)
+        {
+            return Ok("Done");
+        }
+        _taskService.CopyToModelState(ModelState);
+        return BadRequest(ModelState);
+    }
+
 }

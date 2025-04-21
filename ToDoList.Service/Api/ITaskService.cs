@@ -9,4 +9,5 @@ public interface ITaskService : IStatusGeneric
     Task<List<Data.Entites.Task>?> GetAllTasks(Guid userId);
     Task<Data.Entites.Task?> GetTaskById(Guid userId,int taskId);
     Task UpdateTask(Guid userId, int taskId, UpdateTaskModel model);
+    Task DeleteTask(Guid userId, int taskId);
 }
