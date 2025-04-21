@@ -127,4 +127,26 @@ public class TaskService(IBaseRepository<Task> baseRepository,
         await _taskRepostory.UpdateAsync(updatedTask);
 
     }
+
+    public async System.Threading.Tasks.Task DeleteTask(Guid userId, int taskId)
+    {
+        User? user = await GetUserById(userId);
+
+        if (user is null)
+        {
+            AddError("Error: User not found");
+            return;
+        }
+
+        Task? task = await _taskRepostory.GetByIdAsync(taskId);
+        if (task is null)
+        {
+            AddError("Error: Task not found");
+            return;
+        }
+
+
+        await _taskRepostory.DeleteAsync(task);
+
+    }
 }
