@@ -2,29 +2,30 @@
 
 @inherits PageCodeSource.GetTaskPageCodeSource
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Edit Task</h2>
-        <button class="btn btn-danger" @onclick="() => DeleteTask()">❌</button>
+
+<div class="container task-container">
+    <div class="task-header">
+        <h2>📝 Task Detail</h2>
+        <button class="btn btn-danger icon-btn" @onclick="() => DeleteTask()">❌</button>
     </div>
 
     @if (TaskDto != null)
     {
-        <EditForm Model="TaskDto">
+        <EditForm Model="TaskDto" class="task-form">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Title</label>
                 <InputText @bind-Value="TaskDto.Title" class="form-control" />
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Description</label>
                 <InputTextArea @bind-Value="TaskDto.Description" class="form-control" rows="4" />
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Status</label>
                 <InputSelect @bind-Value="TaskDto.Status" class="form-select">
                     <option value="">Select status</option>
@@ -34,47 +35,132 @@
                 </InputSelect>
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label class="form-label">Due Date</label>
                 <InputDate @bind-Value="TaskDto.DueDate" class="form-control" />
             </div>
 
-            <div class="d-flex justify-content-end gap-2">
+            <div class="button-group">
                 <button type="submit" class="btn btn-primary" @onclick="SaveTask">💾 Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="NavigateToAllTasks">↩ Back</button>
             </div>
         </EditForm>
     }
     else
     {
-        <p class="text-muted">Task not found.</p>
+        <p class="text-muted">⚠️ Task not found.</p>
     }
 </div>
 <style>
-    .btn {
-        padding: 10px 15px;
-        border-radius: 5px;
-        font-weight: bold;
+    .task-container {
+        margin-top: 50px;
+        max-width: 700px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        border: none;
+    .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
     }
 
-    .btn-primary {
-        background-color: #007bff;
-        color: white;
-        border: none;
-    }
+        .task-header h2 {
+            margin: 0;
+            font-weight: 600;
+            color: #343a40;
+        }
 
-    .btn-secondary {
-        background-color: #6c757d;
-        color: white;
-        border: none;
+    .form-group {
+        margin-bottom: 20px;
     }
 
     .form-label {
         font-weight: 500;
+        margin-bottom: 5px;
+        display: block;
+        color: #495057;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        display: flex;
+    }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+        }
+
+    .icon-btn {
+        font-size: 20px;
+        padding: 6px 12px;
+        line-height: 1;
+    }
+
+ 
+
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+        .button-group .btn {
+            width: 100%;
+        }
+
     }
 </style>

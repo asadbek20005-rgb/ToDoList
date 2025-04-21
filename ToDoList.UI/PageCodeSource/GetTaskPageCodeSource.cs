@@ -52,6 +52,9 @@ public class GetTaskPageCodeSource : ComponentBase
         }
     }
 
-
+    public void NavigateToAllTasks()
+    {
+        NavigationManager.NavigateTo("/all-tasks");
+    }
 
 }

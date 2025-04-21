@@ -19,7 +19,7 @@ public class CreateTaskPageCodeSource : ComponentBase
         var response = await TaskIntegration.CreateTask(Model);
         if (response == HttpStatusCode.OK)
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/all-tasks");
         }
     }
 }
