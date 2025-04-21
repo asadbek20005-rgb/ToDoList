@@ -29,4 +29,13 @@ public class TaskIntegration(HttpClient httpClient, ITokenHelper tokenHelper) : 
         return new(response.StatusCode, tasks);
 
     }
+
+    public async Task<Tuple<HttpStatusCode, TaskDto?>> GetTaskById(int taskId)
+    {
+        await _tokenHelper.AddTokenToHeader();
+        string url = $"/api/Users/userId/Tasks/{taskId}";
+        var response = await _httpClient.GetAsync(url);
+        var task = await response.Content.ReadFromJsonAsync<TaskDto>();
+        return new(response.StatusCode, task);
+    }
 }

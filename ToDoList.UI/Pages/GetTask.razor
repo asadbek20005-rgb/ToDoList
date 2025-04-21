@@ -1,0 +1,49 @@
+﻿@page "/get-task/{taskId:int}"
+
+@inherits PageCodeSource.GetTaskPageCodeSource
+
+<div class="container">
+    <h2 class="page-title">Edit Task</h2>
+    <p class="subtitle">You can edit the task details below:</p>
+    <hr />
+
+    @if (TaskDto != null)
+    {
+        <EditForm Model="TaskDto" OnValidSubmit="SaveTask">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label>Title</label>
+                <InputText @bind-Value="TaskDto.Title" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <InputTextArea @bind-Value="TaskDto.Description" class="form-control" rows="4" />
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <InputSelect @bind-Value="TaskDto.Status" class="form-control">
+                    <option value="">Select status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </InputSelect>
+            </div>
+
+            <div class="form-group">
+                <label>Due Date</label>
+                <InputDate @bind-Value="TaskDto.DueDate" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">💾 Save Task</button>
+        </EditForm>
+    }
+    else
+    {
+        <p class="text-muted">Task not found.</p>
+    }
+</div>
+
