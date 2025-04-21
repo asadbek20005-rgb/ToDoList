@@ -23,4 +23,10 @@ public class GetAllTaskCodeSource : ComponentBase
             NavigationManager.NavigateTo("/login");
         }
     }
+
+
+    public void NavigateToTaskDetail(int taskId)
+    {
+        NavigationManager.NavigateTo($"/get-task/{taskId}");
+    }
 }

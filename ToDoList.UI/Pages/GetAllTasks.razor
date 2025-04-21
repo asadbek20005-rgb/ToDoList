@@ -1,50 +1,96 @@
 ﻿@page "/all-tasks"
 @inherits PageCodeSource.GetAllTaskCodeSource
+
 <div class="container">
-    <h1>All Tasks</h1>
-    <p>Here are all the tasks you have created.</p>
+    <h1 class="page-title">All Tasks</h1>
+    <p class="subtitle">Here are all the tasks you have created.</p>
     <hr />
 
     @if (Tasks != null && Tasks.Any())
     {
-        @foreach (var task in Tasks)
-        {
-            <div class="task-card">
-                <h3>@task.Title</h3>
-                <p><strong>Description:</strong> @task.Description</p>
-                <p><strong>Status:</strong> @task.Status</p>
-                <p><strong>Created At:</strong> @task.CreatedAt.ToString("yyyy-MM-dd")</p>
-                <p><strong>Due Date:</strong> @task.DueDate.ToString("yyyy-MM-dd")</p>
-            </div>
-            <hr />
-        }
+        <div class="task-grid">
+            @foreach (var task in Tasks)
+            {
+                <div class="task-card" @onclick="() => NavigateToTaskDetail(task.Id)">
+                    <h3>@task.Title</h3>
+                    <p><strong>Description:</strong> @task.Description</p>
+                    <p><strong>Status:</strong> <span class="status">@task.Status</span></p>
+                    <p><strong>Created At:</strong> @task.CreatedAt.ToString("yyyy-MM-dd")</p>
+                    <p><strong>Due Date:</strong> @task.DueDate.ToString("yyyy-MM-dd")</p>
+                </div>
+            }
+        </div>
     }
     else
     {
-        <p>No tasks found.</p>
+        <p class="no-task">No tasks found.</p>
     }
 </div>
 
 
 <style>
-    .task-card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
     }
 
+    .page-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .task-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .task-card {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+    }
+
+        .task-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
         .task-card h3 {
-            margin: 0 0 10px 0;
-            color: #333;
+            margin-bottom: 10px;
+            color: #2c3e50;
         }
 
         .task-card p {
             margin: 5px 0;
             font-size: 14px;
-            color: #444;
+            color: #555;
         }
 
+    .status {
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        background-color: #f1f1f1;
+        color: #333;
+    }
+
+    .no-task {
+        color: #888;
+        font-style: italic;
+        margin-top: 20px;
+    }
 </style>
