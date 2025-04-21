@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Net;
 using ToDoList.Common.Dtos;
+using ToDoList.Common.Models;
 using ToDoList.UI.Integrations;
 
 namespace ToDoList.UI.PageCodeSource;
@@ -25,8 +26,19 @@ public class GetTaskPageCodeSource : ComponentBase
     }
 
 
-    public void SaveTask()
+    public async Task SaveTask()
     {
-
+        var updatedTask = new UpdateTaskModel
+        {
+            Title = TaskDto.Title,
+            Description = TaskDto.Description,
+            Status = TaskDto.Status,
+            DueDate = TaskDto.DueDate
+        };
+        var statusCode = await TaskIntegration.UpdateTask(TaskId, updatedTask);
+        if (statusCode == HttpStatusCode.OK)
+        {
+            NavigationManager.NavigateTo("/all-tasks");
+        }
     }
 }
